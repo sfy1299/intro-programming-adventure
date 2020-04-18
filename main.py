@@ -165,10 +165,10 @@ def game():
                     exit()
             else:
                 response_MESSAGE = False
-                while (response_choice == False):
+                while (response_choice is False):
                     try:
                         response_choice = int(
-                            input("Enter 0 to exit cave or 1 to build shelter > "))
+                            input("0 to exit cave or 1 to build shelter > "))
                     except TypeError:
                         print_sleep("Oops! You didn't enter the right input!")
                         result = get_play_again()
