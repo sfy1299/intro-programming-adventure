@@ -13,6 +13,10 @@ except TypeError:
     print("You didn't enter the right values, so 1 as min and 6 as max.")
     min = 1
     max = 6
+except ValueError:
+    print("You didn't enter the right values, so 1 as min and 6 as max.")
+    min = 1
+    max = 6
 
 if min > max:
     print("You didn't enter the right values, so 1 as min and 6 as max.")
@@ -30,28 +34,35 @@ def print_sleep(message, delay=0.1):
     time.sleep(delay)
 
 
-def random_choice(min, max):
+def random_choice_func(min, max):
     return random.randint(min, max)
 
 
 def get_play_again():
     print_sleep("Would you like to play again?", 0.2)
     print_sleep("Enter 0 for no and 1 for yes:")
-    play = input("Play again [0/1] > ")
-    if play == str(0):
-        played = False
-    elif play == str(1):
-        played = True
-    else:
-        print("I don't know that, so bye!")
+    try:
+        play = int(input("Play again [0/1] > "))
+        if play == 0:
+            played = False
+        elif play == 1:
+            played = True
+        else:
+            print("I don't know that, so bye!")
+            exit()
+        return played
+    except TypeError:
+        print("Invalid input, so exiting. Bye!")
         exit()
-    return played
+    except ValueError:
+        print("Invalid input, so exiting. Bye!")
+        exit()
 # UTILITY FUNCTIONS
 
 
 # RANDOMIZED VARIABLES
-random_choice = random_choice(min, max)
-random_test = random_choice(min - 10, max + 10)
+random_choice = random_choice_func(min, max)
+random_test = random_choice_func(min, max)
 # RANDOMIZED VARIABLES
 
 # GAME FUNCTION
@@ -79,6 +90,14 @@ def game():
         try:
             inputd = int(inputd)
         except TypeError:
+            print(
+                "Wrong input, I'm asking you if you want to play again!")
+            result = get_play_again()
+            if result:
+                game()
+            else:
+                exit()
+        except ValueError:
             print(
                 "Wrong input, I'm asking you if you want to play again!")
             result = get_play_again()
@@ -128,6 +147,14 @@ def game():
             Wrong input, asking you if you want to play again.
             """)
             result = get_play_again()
+        except ValueError:
+            print(
+                "Wrong input, I'm asking you if you want to play again!")
+            result = get_play_again()
+            if result:
+                game()
+            else:
+                exit()
 
         if response_choice == 0:
             print_sleep("Great choice! You found an awesome sword!")
@@ -140,6 +167,14 @@ def game():
                     input("Enter 0 to exit cave or 1 to build shelter > "))
             except TypeError:
                 print_sleep("Oops! You didn't enter the right input!")
+                result = get_play_again()
+                if result:
+                    game()
+                else:
+                    exit()
+            except ValueError:
+                print(
+                    "Wrong input, asking if you want to play again!")
                 result = get_play_again()
                 if result:
                     game()
@@ -165,12 +200,42 @@ def game():
                     exit()
             else:
                 response_MESSAGE = False
-                while (response_choice is False):
+                while (response_MESSAGE is False):
                     try:
                         response_choice = int(
                             input("0 to exit cave or 1 to build shelter > "))
+                        if response_choice == 0:
+                            print_sleep("""
+                                The cave exit is far away, you're stranded!
+                                """)
+                            result = get_play_again()
+                            if result:
+                                game()
+                            else:
+                                exit()
+                        elif response_choice == 1:
+                            print_sleep("""
+                            Bears found you, stuck in the cave forever!
+                            """)
+                            result = get_play_again()
+                            if result:
+                                game()
+                            else:
+                                exit()
+                        else:
+                            print("Invalid input, so bye!")
+                            exit()
+
                     except TypeError:
                         print_sleep("Oops! You didn't enter the right input!")
+                        result = get_play_again()
+                        if result:
+                            game()
+                        else:
+                            exit()
+                    except ValueError:
+                        print(
+                            "Wrong input, asking if you want to play again!")
                         result = get_play_again()
                         if result:
                             game()
